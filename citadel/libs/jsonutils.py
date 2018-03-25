@@ -69,6 +69,9 @@ def jsonize(f):
     @wraps(f)
     def _(*args, **kwargs):
         r = f(*args, **kwargs)
-        data, code = r if isinstance(r, tuple) else (r, 200)
-        return Response(json.dumps(data, cls=VersatileEncoder), status=code, mimetype='application/json')
+        try:
+            data, code = r if isinstance(r, tuple) else (r, 200)
+            return Response(json.dumps(data, cls=VersatileEncoder), status=code, mimetype='application/json')
+        except Exception:
+            return r
     return _
